@@ -1,0 +1,46 @@
+<aside id="left-panel">
+
+    <!-- User info -->
+    <sa-login-info></sa-login-info>
+    <!-- end user info -->
+
+    <nav>
+        <!-- NOTE: Notice the gaps after each icon usage <i></i>..
+        Please note that these links work a bit different than
+        traditional href="" links. See documentation for details.
+        -->
+
+        <ul saSmartMenu>
+            <li>
+                <a title="Dashboard" routerLink="/dashboard/analytics">
+                    <i class="fa fa-lg fa-fw fa-home"></i>
+                    <span class="menu-item-parent">{{'Dashboard' | i18n}}</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa fa-lg fa-fw fas fa-users"></i>
+                    <span class="menu-item-parent">{{'Members' | i18n}}</span>
+                </a>
+                <ul>
+                    <li routerLinkActive="active">
+                        <a routerLink="/members/all-members">{{'All Members' | i18n}}</a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/tables/datatables">{{'Semi Custom' | i18n}}
+                            <span class="badge inbox-badge bg-color-greenLight">v1.10</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <!--<li aside-chat></li>-->
+        </ul>
+
+    </nav>
+
+    <sa-minify-menu></sa-minify-menu>
+
+</aside>
