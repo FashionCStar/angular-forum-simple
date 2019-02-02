@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MemberProfileRoutingModule} from './member-profile-routing.module';
-import {MemberProfileComponent} from './member-profile.component';
+import {LeadProfileRoutingModule} from './lead-profile-routing.module';
+import {LeadProfileComponent} from './lead-profile.component';
 import {SmartadminLayoutModule} from '@app/shared/layout';
 import {StatsModule} from '@app/shared/stats/stats.module';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -13,13 +13,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         CommonModule,
         SmartadminLayoutModule,
         StatsModule,
-        MemberProfileRoutingModule,
+        LeadProfileRoutingModule,
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
         ModalModule.forRoot()
     ],
-    declarations: [MemberProfileComponent]
+    declarations: [LeadProfileComponent]
 })
-export class MemberProfileModule {
+export class LeadProfileModule {
 }

@@ -95,6 +95,12 @@ const routes: Routes = [
             },
 
             {
+                path: "leads",
+                loadChildren: "./features/leads/leads.module#LeadsModule",canActivate: [AuthGuard],
+                data: {pageTitle: "Leads"}
+            },
+
+            {
                 path: "ui",
                 loadChildren:
                     "./features/ui-elements/ui-elements.module#UiElementsModule",

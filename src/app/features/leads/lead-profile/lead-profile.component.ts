@@ -8,12 +8,12 @@ import {catchError, map} from "rxjs/operators";
 import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
-    selector: 'sa-member-profile',
-    templateUrl: './member-profile.component.html',
-    styleUrls: ['./member-profile.component.css']
+    selector: 'sa-lead-profile',
+    templateUrl: './lead-profile.component.html',
+    styleUrls: ['./lead-profile.component.css']
 })
 
-export class MemberProfileComponent implements OnInit {
+export class LeadProfileComponent implements OnInit {
 
     memberDetails: MemberDetails;
     postData: PostData;
