@@ -145,7 +145,8 @@
                             </div>
                         </form>
 
-                        <div *ngFor="let note1 of memberDetails.notes; let i = index">
+                        <div *ngIf="memberDetails.notes">
+                            <div *ngFor="let note1 of memberDetails.notes.slice().reverse() let i = index">
                             <div class="timeline-seperator text-center">
                                 <span>{{note1.date_added}}</span>
                                 <div class="btn-group pull-right">
@@ -182,11 +183,119 @@
                                                 <a class="text-info"><i class="fa fa-reply"></i> Reply</a>
                                             </li>
                                             <li>
-                                                <a class="text-danger" (click)="addLikeComment(note1)"><i class="fa fa-thumbs-up"></i> Like</a>
+                                                <a (click)="showCommentModal('parent', note1)" class="txt-color-blueDark hidden-mobile">
+                                                    <i class="fa-fw fa fa-pencil-square-o"></i>
+                                                </a>
+
+                                                <div bsModal #addCommentNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog modal-md" style="width: 610px;">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" (click)="closeCommentModal('parent')" aria-hidden="true">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title">
+                                                                    <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body no-padding">
+                                                                <form class="smart-form well padding-bottom-10" novalidate="novalidate">
+                                                                    <ul class="list-inline font-xs">
+                                                                        <li>
+                                                                            <h3 class="font-md" >
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-thumbs-up')"><i class="fa fa-thumbs-up" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-frown-o')"><i class="fa fa-frown-o" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-smile-o')"><i class="fa fa-smile-o" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-heart-o')"><i class="fa fa-heart-o" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-glass')"><i class="fa fa-glass" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-gavel')"><i class="fa fa-gavel" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bolt')"><i class="fa fa-bolt" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-female')"><i class="fa fa-female" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-male')"><i class="fa fa-male" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-moon-o')"><i class="fa fa-moon-o" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-home')"><i class="fa fa-home" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bug')"><i class="fa fa-bug" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-dollar')"><i class="fa fa-dollar" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bank')"><i class="fa fa-bank" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                        <li>
+                                                                            <h3 class="font-md">
+                                                                                <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-coffee')"><i class="fa fa-coffee" style="font-size: 32px;"></i></a>
+                                                                            </h3>
+                                                                        </li>
+                                                                    </ul>
+
+                                                                    <footer>
+                                                                        <button type="submit" class="btn btn-primary" (click)="closeCommentModal('parent')">
+                                                                            Close
+                                                                        </button>
+                                                                    </footer>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </li>
-                                            <li>
-                                                <a class="text-danger" (click)="removeLikeComment(note1)"><i class="fa fa-thumbs-down"></i> UnLike</a>
-                                            </li>
+                                            <!--<li>-->
+                                                <!--<a class="text-danger" (click)="addLikeComment(note1)"><i class="fa fa-thumbs-up"></i> Like</a>-->
+                                            <!--</li>-->
+                                            <!--<li>-->
+                                                <!--<a class="text-danger" (click)="removeLikeComment(note1)"><i class="fa fa-thumbs-down"></i> UnLike</a>-->
+                                            <!--</li>-->
                                             <!--<li>-->
                                                 <!--<a class="text-muted">Show All Comments (14)</a>-->
                                             <!--</li>-->
@@ -268,19 +377,27 @@
                                                                 <div class="col-sm-3">
                                                                     <img src="{{comment.profile_image}}">
                                                                 </div>
-                                                                <div class="col-sm-9">
+                                                                <div class="col-sm-7">
                                                                     <div>{{comment.date_added}}</div>
                                                                     <div>{{comment.first_name}} {{comment.last_name}}</div>
+                                                                </div>
+                                                                <div class="col-sm-2" style="color:white;">
+                                                                    <button type="button" class="close" aria-hidden="true">
+                                                                        &times;
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <li>
+                                                <a class="text-danger" (click)="removeLikeComment(note1)">Remove Comment</a>
+                                            </li>
                                         </ul>
                                     </li>
 
-                                    <div *ngFor="let childnote of note1.child_notes; let j = index">
+                                    <div *ngFor="let childnote of note1.child_notes.slice().reverse() let j = index">
                                         <li class="message message-reply">
                                             <img src="{{childnote['profile_image']}}" class="online" alt="user">
                                             <span class="message-text">
@@ -289,11 +406,114 @@
                                                 <i class="fa fa-smile-o txt-color-orange"></i>
                                             </span>
                                             <ul class="list-inline font-xs">
+
                                                 <li>
-                                                    <a class="text-danger" (click)="addLikeComment(childnote)"><i class="fa fa-thumbs-up"></i> Like</a>
-                                                </li>
-                                                <li>
-                                                    <a class="text-danger" (click)="removeLikeComment(childnote)"><i class="fa fa-thumbs-down"></i> UnLike</a>
+                                                    <a (click)="showCommentModal('child', childnote)" class="txt-color-blueDark hidden-mobile">
+                                                        <i class="fa-fw fa fa-pencil-square-o"></i>
+                                                    </a>
+
+                                                    <div bsModal #addCommentChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog modal-md" style="width: 610px;">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" (click)="closeCommentModal('child')" aria-hidden="true">
+                                                                        &times;
+                                                                    </button>
+                                                                    <h4 class="modal-title">
+                                                                        <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="modal-body no-padding">
+                                                                    <form class="smart-form well padding-bottom-10" novalidate="novalidate">
+                                                                        <ul class="list-inline font-xs">
+                                                                            <li>
+                                                                                <h3 class="font-md" >
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-thumbs-up')"><i class="fa fa-thumbs-up" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-frown-o')"><i class="fa fa-frown-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-smile-o')"><i class="fa fa-smile-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-heart-o')"><i class="fa fa-heart-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-glass')"><i class="fa fa-glass" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-gavel')"><i class="fa fa-gavel" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bolt')"><i class="fa fa-bolt" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-female')"><i class="fa fa-female" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-male')"><i class="fa fa-male" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-moon-o')"><i class="fa fa-moon-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-home')"><i class="fa fa-home" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bug')"><i class="fa fa-bug" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-dollar')"><i class="fa fa-dollar" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bank')"><i class="fa fa-bank" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-coffee')"><i class="fa fa-coffee" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                        </ul>
+
+                                                                        <footer>
+                                                                            <button type="submit" class="btn btn-primary" (click)="closeCommentModal('child')">
+                                                                                Close
+                                                                            </button>
+                                                                        </footer>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </li>
                                                 <li>
                                                     <a (click)="showNoteModal('child',childnote)" class="text-primary">Edit</a>
@@ -376,22 +596,26 @@
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <li>
+                                                    <a class="text-danger" (click)="removeLikeComment(childnote)">Remove Comment</a>
+                                                </li>
                                             </ul>
                                         </li>
-                                    </div>
+                                </div>
 
                                     <li>
                                         <div class="input-group wall-comment-reply">
                                             <input type="text" class="form-control" [(ngModel)]="note1.reply" placeholder="Type your message here...">
                                             <span class="input-group-btn">
-                                                    <button class="btn btn-primary" (click)="addPost(note1)">
-                                                        <i class="fa fa-reply"></i> Reply
-                                                    </button>
-                                                </span>
+                                                <button class="btn btn-primary" (click)="addPost(note1)">
+                                                    <i class="fa fa-reply"></i> Reply
+                                                </button>
+                                            </span>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

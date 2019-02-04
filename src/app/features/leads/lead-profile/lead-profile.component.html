@@ -21,9 +21,9 @@
                                             <h4 class="txt-color-white font-md">Jan 1, 2014</h4>
                                         </div>
                                         <!--<ol class="carousel-indicators">-->
-                                            <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
-                                            <!--<li data-target="#myCarousel" data-slide-to="1" class=""></li>-->
-                                            <!--<li data-target="#myCarousel" data-slide-to="2" class=""></li>-->
+                                        <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
+                                        <!--<li data-target="#myCarousel" data-slide-to="1" class=""></li>-->
+                                        <!--<li data-target="#myCarousel" data-slide-to="2" class=""></li>-->
                                         <!--</ol>-->
                                         <div class="carousel-inner">
                                             <!-- Slide 1 -->
@@ -145,31 +145,32 @@
                             </div>
                         </form>
 
-                        <div *ngFor="let note1 of memberDetails.notes; let i = index">
-                            <div class="timeline-seperator text-center">
-                                <span>{{note1.date_added}}</span>
-                                <div class="btn-group pull-right">
-                                    <a href="" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">
-                                        <span class="caret single"></span>
-                                    </a>
-                                    <ul class="dropdown-menu text-left">
-                                        <li>
-                                            <a href="">Hide this post</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Hide future posts from this user</a>
-                                        </li>
-                                        <li>
-                                            <a href="">Mark as spam</a>
-                                        </li>
-                                    </ul>
+                        <div *ngIf="memberDetails.notes">
+                            <div *ngFor="let note1 of memberDetails.notes.slice().reverse() let i = index">
+                                <div class="timeline-seperator text-center">
+                                    <span>{{note1.date_added}}</span>
+                                    <div class="btn-group pull-right">
+                                        <a href="" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle">
+                                            <span class="caret single"></span>
+                                        </a>
+                                        <ul class="dropdown-menu text-left">
+                                            <li>
+                                                <a href="">Hide this post</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Hide future posts from this user</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Mark as spam</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="chat-body no-padding profile-message">
-                                <ul>
-                                    <li class="message">
-                                        <img src="{{note1.profile_image}}" class="online" alt="sunny" style="width:48px;">
-                                        <span class="message-text">
+                                <div class="chat-body no-padding profile-message">
+                                    <ul>
+                                        <li class="message">
+                                            <img src="{{note1.profile_image}}" class="online" alt="sunny" style="width:48px;">
+                                            <span class="message-text">
                                             <a href="" class="username">
                                                 {{note1.first_name}} {{note1.last_name}}
                                                 <!--<small class="text-muted pull-right ultra-light"> {{note1.date_added}}-->
@@ -177,142 +178,148 @@
                                             </a>
                                             {{note1.note}}
                                         </span>
-                                        <ul class="list-inline font-xs">
-                                            <li>
-                                                <a class="text-info"><i class="fa fa-reply"></i> Reply</a>
-                                            </li>
-                                            <li>
-                                                <a class="text-danger" (click)="addLikeComment(note1)"><i class="fa fa-thumbs-up"></i> Like</a>
-                                            </li>
-                                            <li>
-                                                <a class="text-danger" (click)="removeLikeComment(note1)"><i class="fa fa-thumbs-down"></i> UnLike</a>
-                                            </li>
-                                            <!--<li>-->
-                                                <!--<a class="text-muted">Show All Comments (14)</a>-->
-                                            <!--</li>-->
-                                            <li>
-                                                <a (click)="showNoteModal('parent',note1)" class="text-primary">Edit</a>
-                                                <div bsModal #updateNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-                                                     aria-hidden="true">
-                                                    <div class="modal-dialog modal-md">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" (click)="closeNoteModal('parent')" aria-hidden="true">
-                                                                    &times;
-                                                                </button>
-                                                                <h4 class="modal-title">
-                                                                    <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
-                                                                </h4>
-                                                            </div>
-                                                            <div class="modal-body no-padding">
-                                                                <form class="smart-form well padding-bottom-10" novalidate="novalidate">
-                                                                    <textarea *ngIf="memberNote" rows="3" class="form-control" name="notecontent" [(ngModel)]="memberNote.note" placeholder="What are you thinking?"></textarea>
-
-                                                                    <footer>
-                                                                        <button type="submit" class="btn btn-primary" (click)="editNote(memberNote)">
-                                                                            Edit Note
-                                                                        </button>
-                                                                    </footer>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <a (click)="showConfirmModal('parent', note1)" class="text-danger">Delete</a>
-                                                <div bsModal #deleteNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-                                                     aria-hidden="true">
-                                                    <div class="modal-dialog modal-md">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" (click)="closeConfirmModal('parent')" aria-hidden="true">
-                                                                    &times;
-                                                                </button>
-                                                                <h4 class="modal-title">
-                                                                    <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
-                                                                </h4>
-                                                            </div>
-                                                            <div class="modal-body no-padding">
-                                                                <form class="smart-form" novalidate="novalidate">
-                                                                    <fieldset>
-                                                                        <div >
-                                                                            Are you sure to delete this note?
-                                                                        </div>
-                                                                    </fieldset>
-                                                                    <footer>
-                                                                        <button type="submit" class="btn btn-primary" (click)="closeConfirmModal('parent')">
-                                                                            No
-                                                                        </button>
-                                                                        <button type="submit" class="btn btn-primary" (click)="removeNote(memberNote)">
-                                                                            Yes
-                                                                        </button>
-                                                                    </footer>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <ul class="list-inline font-xs">
-                                            <li>
-                                                <a class="text-muted"> {{note1.date_added}} </a>
-                                            </li>
-                                            <li>
-                                                <ul *ngIf="note1.like_symbols" class="list-inline font-xs" >
-                                                    <li *ngFor="let comment of note1.like_symbols; let k = index">
-                                                        <div class="text-danger comment">
-                                                            <i class="{{comment.html_snippet}}"></i>
-                                                            <div class="commentfrom row">
-                                                                <div class="col-sm-3">
-                                                                    <img src="{{comment.profile_image}}">
-                                                                </div>
-                                                                <div class="col-sm-9">
-                                                                    <div>{{comment.date_added}}</div>
-                                                                    <div>{{comment.first_name}} {{comment.last_name}}</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <div *ngFor="let childnote of note1.child_notes; let j = index">
-                                        <li class="message message-reply">
-                                            <img src="{{childnote['profile_image']}}" class="online" alt="user">
-                                            <span class="message-text">
-                                                <a href="" class="username"> {{childnote['first_name']}} {{childnote['last_name']}}</a>
-                                                {{childnote['note']}}
-                                                <i class="fa fa-smile-o txt-color-orange"></i>
-                                            </span>
                                             <ul class="list-inline font-xs">
                                                 <li>
-                                                    <a class="text-danger" (click)="addLikeComment(childnote)"><i class="fa fa-thumbs-up"></i> Like</a>
+                                                    <a class="text-info"><i class="fa fa-reply"></i> Reply</a>
                                                 </li>
                                                 <li>
-                                                    <a class="text-danger" (click)="removeLikeComment(childnote)"><i class="fa fa-thumbs-down"></i> UnLike</a>
+                                                    <a (click)="showCommentModal('parent', note1)" class="txt-color-blueDark hidden-mobile">
+                                                        <i class="fa-fw fa fa-pencil-square-o"></i>
+                                                    </a>
+
+                                                    <div bsModal #addCommentNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog modal-md" style="width: 610px;">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" (click)="closeCommentModal('parent')" aria-hidden="true">
+                                                                        &times;
+                                                                    </button>
+                                                                    <h4 class="modal-title">
+                                                                        <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                    </h4>
+                                                                </div>
+                                                                <div class="modal-body no-padding">
+                                                                    <form class="smart-form well padding-bottom-10" novalidate="novalidate">
+                                                                        <ul class="list-inline font-xs">
+                                                                            <li>
+                                                                                <h3 class="font-md" >
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-thumbs-up')"><i class="fa fa-thumbs-up" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-frown-o')"><i class="fa fa-frown-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-smile-o')"><i class="fa fa-smile-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-heart-o')"><i class="fa fa-heart-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-glass')"><i class="fa fa-glass" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-gavel')"><i class="fa fa-gavel" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bolt')"><i class="fa fa-bolt" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-female')"><i class="fa fa-female" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-male')"><i class="fa fa-male" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-moon-o')"><i class="fa fa-moon-o" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-home')"><i class="fa fa-home" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bug')"><i class="fa fa-bug" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-dollar')"><i class="fa fa-dollar" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bank')"><i class="fa fa-bank" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                            <li>
+                                                                                <h3 class="font-md">
+                                                                                    <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-coffee')"><i class="fa fa-coffee" style="font-size: 32px;"></i></a>
+                                                                                </h3>
+                                                                            </li>
+                                                                        </ul>
+
+                                                                        <footer>
+                                                                            <button type="submit" class="btn btn-primary" (click)="closeCommentModal('parent')">
+                                                                                Close
+                                                                            </button>
+                                                                        </footer>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </li>
+                                                <!--<li>-->
+                                                <!--<a class="text-danger" (click)="addLikeComment(note1)"><i class="fa fa-thumbs-up"></i> Like</a>-->
+                                                <!--</li>-->
+                                                <!--<li>-->
+                                                <!--<a class="text-danger" (click)="removeLikeComment(note1)"><i class="fa fa-thumbs-down"></i> UnLike</a>-->
+                                                <!--</li>-->
+                                                <!--<li>-->
+                                                <!--<a class="text-muted">Show All Comments (14)</a>-->
+                                                <!--</li>-->
                                                 <li>
-                                                    <a (click)="showNoteModal('child',childnote)" class="text-primary">Edit</a>
-                                                    <div bsModal #updateChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                    <a (click)="showNoteModal('parent',note1)" class="text-primary">Edit</a>
+                                                    <div bsModal #updateNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
                                                          aria-hidden="true">
                                                         <div class="modal-dialog modal-md">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <button type="button" class="close" (click)="closeNoteModal('child')" aria-hidden="true">
+                                                                    <button type="button" class="close" (click)="closeNoteModal('parent')" aria-hidden="true">
                                                                         &times;
                                                                     </button>
+                                                                    <h4 class="modal-title">
+                                                                        <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                    </h4>
                                                                 </div>
                                                                 <div class="modal-body no-padding">
                                                                     <form class="smart-form well padding-bottom-10" novalidate="novalidate">
                                                                         <textarea *ngIf="memberNote" rows="3" class="form-control" name="notecontent" [(ngModel)]="memberNote.note" placeholder="What are you thinking?"></textarea>
 
                                                                         <footer>
-                                                                            <button type="submit" class="btn btn-primary" (click)="editChildNote(memberNote)">
-                                                                                Edit Reply Note
+                                                                            <button type="submit" class="btn btn-primary" (click)="editNote(memberNote)">
+                                                                                Edit Note
                                                                             </button>
                                                                         </footer>
                                                                     </form>
@@ -322,28 +329,31 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <a (click)="showConfirmModal('child', childnote)" class="text-danger">Delete</a>
-                                                    <div bsModal #deleteChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                    <a (click)="showConfirmModal('parent', note1)" class="text-danger">Delete</a>
+                                                    <div bsModal #deleteNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
                                                          aria-hidden="true">
                                                         <div class="modal-dialog modal-md">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <button type="button" class="close" (click)="closeConfirmModal('child')" aria-hidden="true">
+                                                                    <button type="button" class="close" (click)="closeConfirmModal('parent')" aria-hidden="true">
                                                                         &times;
                                                                     </button>
+                                                                    <h4 class="modal-title">
+                                                                        <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                    </h4>
                                                                 </div>
                                                                 <div class="modal-body no-padding">
                                                                     <form class="smart-form" novalidate="novalidate">
                                                                         <fieldset>
                                                                             <div >
-                                                                                Are you sure to delete this child note?
+                                                                                Are you sure to delete this note?
                                                                             </div>
                                                                         </fieldset>
                                                                         <footer>
-                                                                            <button type="submit" class="btn btn-primary" (click)="closeConfirmModal('child')">
+                                                                            <button type="submit" class="btn btn-primary" (click)="closeConfirmModal('parent')">
                                                                                 No
                                                                             </button>
-                                                                            <button type="submit" class="btn btn-primary" (click)="removeChildNote(memberNote)">
+                                                                            <button type="submit" class="btn btn-primary" (click)="removeNote(memberNote)">
                                                                                 Yes
                                                                             </button>
                                                                         </footer>
@@ -356,41 +366,255 @@
                                             </ul>
                                             <ul class="list-inline font-xs">
                                                 <li>
-                                                    <a href="" class="text-muted"> {{childnote.date_added}} </a>
+                                                    <a class="text-muted"> {{note1.date_added}} </a>
                                                 </li>
                                                 <li>
-                                                    <ul *ngIf="childnote.like_symbols" class="list-inline font-xs" >
-                                                        <li *ngFor="let childcomment of childnote.like_symbols; let k = index">
+                                                    <ul *ngIf="note1.like_symbols" class="list-inline font-xs" >
+                                                        <li *ngFor="let comment of note1.like_symbols; let k = index">
                                                             <div class="text-danger comment">
-                                                                <i class="{{childcomment.html_snippet}}"></i>
+                                                                <i class="{{comment.html_snippet}}"></i>
                                                                 <div class="commentfrom row">
                                                                     <div class="col-sm-3">
-                                                                        <img src="{{childcomment.profile_image}}">
+                                                                        <img src="{{comment.profile_image}}">
                                                                     </div>
-                                                                    <div class="col-sm-9">
-                                                                        <div>{{childcomment.date_added}}</div>
-                                                                        <div>{{childcomment.first_name}} {{childcomment.last_name}}</div>
+                                                                    <div class="col-sm-7">
+                                                                        <div>{{comment.date_added}}</div>
+                                                                        <div>{{comment.first_name}} {{comment.last_name}}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-2" style="color:white;">
+                                                                        <button type="button" class="close" aria-hidden="true">
+                                                                            &times;
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <li>
+                                                    <a class="text-danger" (click)="removeLikeComment(note1)">Remove Comment</a>
+                                                </li>
                                             </ul>
                                         </li>
-                                    </div>
 
-                                    <li>
-                                        <div class="input-group wall-comment-reply">
-                                            <input type="text" class="form-control" [(ngModel)]="note1.reply" placeholder="Type your message here...">
-                                            <span class="input-group-btn">
-                                                    <button class="btn btn-primary" (click)="addPost(note1)">
-                                                        <i class="fa fa-reply"></i> Reply
-                                                    </button>
-                                                </span>
+                                        <div *ngFor="let childnote of note1.child_notes.slice().reverse() let j = index">
+                                            <li class="message message-reply">
+                                                <img src="{{childnote['profile_image']}}" class="online" alt="user">
+                                                <span class="message-text">
+                                                <a href="" class="username"> {{childnote['first_name']}} {{childnote['last_name']}}</a>
+                                                {{childnote['note']}}
+                                                <i class="fa fa-smile-o txt-color-orange"></i>
+                                            </span>
+                                                <ul class="list-inline font-xs">
+
+                                                    <li>
+                                                        <a (click)="showCommentModal('child', childnote)" class="txt-color-blueDark hidden-mobile">
+                                                            <i class="fa-fw fa fa-pencil-square-o"></i>
+                                                        </a>
+
+                                                        <div bsModal #addCommentChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-md" style="width: 610px;">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" (click)="closeCommentModal('child')" aria-hidden="true">
+                                                                            &times;
+                                                                        </button>
+                                                                        <h4 class="modal-title">
+                                                                            <img src="assets/img/logo.png" width="150" alt="SmartAdmin">
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="modal-body no-padding">
+                                                                        <form class="smart-form well padding-bottom-10" novalidate="novalidate">
+                                                                            <ul class="list-inline font-xs">
+                                                                                <li>
+                                                                                    <h3 class="font-md" >
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-thumbs-up')"><i class="fa fa-thumbs-up" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-frown-o')"><i class="fa fa-frown-o" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-smile-o')"><i class="fa fa-smile-o" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-heart-o')"><i class="fa fa-heart-o" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-glass')"><i class="fa fa-glass" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-gavel')"><i class="fa fa-gavel" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bolt')"><i class="fa fa-bolt" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-female')"><i class="fa fa-female" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-male')"><i class="fa fa-male" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-moon-o')"><i class="fa fa-moon-o" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-home')"><i class="fa fa-home" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bug')"><i class="fa fa-bug" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-dollar')"><i class="fa fa-dollar" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-bank')"><i class="fa fa-bank" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <h3 class="font-md">
+                                                                                        <a class="text-danger" (click)="addLikeComment(memberNote, 'fa fa-coffee')"><i class="fa fa-coffee" style="font-size: 32px;"></i></a>
+                                                                                    </h3>
+                                                                                </li>
+                                                                            </ul>
+
+                                                                            <footer>
+                                                                                <button type="submit" class="btn btn-primary" (click)="closeCommentModal('child')">
+                                                                                    Close
+                                                                                </button>
+                                                                            </footer>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <a (click)="showNoteModal('child',childnote)" class="text-primary">Edit</a>
+                                                        <div bsModal #updateChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-md">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" (click)="closeNoteModal('child')" aria-hidden="true">
+                                                                            &times;
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body no-padding">
+                                                                        <form class="smart-form well padding-bottom-10" novalidate="novalidate">
+                                                                            <textarea *ngIf="memberNote" rows="3" class="form-control" name="notecontent" [(ngModel)]="memberNote.note" placeholder="What are you thinking?"></textarea>
+
+                                                                            <footer>
+                                                                                <button type="submit" class="btn btn-primary" (click)="editChildNote(memberNote)">
+                                                                                    Edit Reply Note
+                                                                                </button>
+                                                                            </footer>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <a (click)="showConfirmModal('child', childnote)" class="text-danger">Delete</a>
+                                                        <div bsModal #deleteChildNote="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-md">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" (click)="closeConfirmModal('child')" aria-hidden="true">
+                                                                            &times;
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body no-padding">
+                                                                        <form class="smart-form" novalidate="novalidate">
+                                                                            <fieldset>
+                                                                                <div >
+                                                                                    Are you sure to delete this child note?
+                                                                                </div>
+                                                                            </fieldset>
+                                                                            <footer>
+                                                                                <button type="submit" class="btn btn-primary" (click)="closeConfirmModal('child')">
+                                                                                    No
+                                                                                </button>
+                                                                                <button type="submit" class="btn btn-primary" (click)="removeChildNote(memberNote)">
+                                                                                    Yes
+                                                                                </button>
+                                                                            </footer>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <ul class="list-inline font-xs">
+                                                    <li>
+                                                        <a href="" class="text-muted"> {{childnote.date_added}} </a>
+                                                    </li>
+                                                    <li>
+                                                        <ul *ngIf="childnote.like_symbols" class="list-inline font-xs" >
+                                                            <li *ngFor="let childcomment of childnote.like_symbols; let k = index">
+                                                                <div class="text-danger comment">
+                                                                    <i class="{{childcomment.html_snippet}}"></i>
+                                                                    <div class="commentfrom row">
+                                                                        <div class="col-sm-3">
+                                                                            <img src="{{childcomment.profile_image}}">
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <div>{{childcomment.date_added}}</div>
+                                                                            <div>{{childcomment.first_name}} {{childcomment.last_name}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <a class="text-danger" (click)="removeLikeComment(childnote)">Remove Comment</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </div>
-                                    </li>
-                                </ul>
+
+                                        <li>
+                                            <div class="input-group wall-comment-reply">
+                                                <input type="text" class="form-control" [(ngModel)]="note1.reply" placeholder="Type your message here...">
+                                                <span class="input-group-btn">
+                                                <button class="btn btn-primary" (click)="addPost(note1)">
+                                                    <i class="fa fa-reply"></i> Reply
+                                                </button>
+                                            </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

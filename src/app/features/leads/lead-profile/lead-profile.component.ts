@@ -6,6 +6,7 @@ import {ApiMembersService} from '@app/services/members.service';
 import {ApiAuthService} from "@app/services/auth.service";
 import {catchError, map} from "rxjs/operators";
 import {forEach} from "@angular/router/src/utils/collection";
+import {NotificationService} from '@app/core/services';
 
 @Component({
     selector: 'sa-lead-profile',
@@ -27,10 +28,13 @@ export class LeadProfileComponent implements OnInit {
     @ViewChild('updateChildNote') updateChildNote;
     @ViewChild('deleteNote') deleteNote;
     @ViewChild('deleteChildNote') deleteChildNote;
+    @ViewChild('addCommentNote') addCommentNote;
+    @ViewChild('addCommentChildNote') addCommentChildNote;
 
     constructor(private activatedRoute: ActivatedRoute
-                , public router: Router
-                , public members: ApiMembersService) {
+        , public router: Router
+        , public members: ApiMembersService
+        ,private notificationService: NotificationService) {
         this.activatedRoute.queryParams.subscribe((params: Params) => {
             this.member_id = params['member_id'];
         });
@@ -53,6 +57,35 @@ export class LeadProfileComponent implements OnInit {
         this.updateMember.show();
     }
 
+    showCommentModal(relation, note) {
+        this.memberNote = Object.assign({}, JSON.parse(JSON.stringify(note)));
+        let isadded = false;
+        if (this.memberNote['like_symbols']) {
+            for (let i = 0; i < this.memberNote['like_symbols'].length; i++) {
+                if (this.admin_id == this.memberNote['like_symbols'][i].admin_id) {
+                    isadded = true;
+                    break;
+                }
+            }
+        }
+        if (isadded == false) {
+            if (relation == 'parent') {
+                this.addCommentNote.show();
+            } else if (relation == 'child') {
+                this.addCommentChildNote.show();
+            }
+        } else {
+            this.notificationService.smallBox({
+                title: "Alert",
+                content: "You already added comment to this note",
+                color: "#C46A69",
+                timeout: 8000,
+                icon: "fa fa-warning shake animated",
+                number: "4"
+            });
+        }
+    }
+
     showNoteModal(relation, note) {
         this.memberNote = Object.assign({}, JSON.parse(JSON.stringify(note)));
         if (relation == 'parent') {
@@ -73,6 +106,14 @@ export class LeadProfileComponent implements OnInit {
 
     closeMemberModal() {
         this.updateMember.hide();
+    }
+
+    closeCommentModal(relation) {
+        if (relation == 'parent') {
+            this.addCommentNote.hide();
+        } else if (relation == 'child') {
+            this.addCommentChildNote.hide();
+        }
     }
 
     closeNoteModal(relation) {
@@ -120,19 +161,26 @@ export class LeadProfileComponent implements OnInit {
 
 
     update(member) {
-        if (member.member_info.password != null) {
-            this.memberDetails = Object.assign({}, member);
-            this.members.updateMemberDetails(this.memberDetails.member_info).subscribe(
-                data => {
-                    if (data['status']) {
-                        alert(data['result']);
-                        this.updateMember.hide();
-                    }
-                }
-            )
-        } else {
-            alert("Please input password");
+        if (member.member_info.password == null) {
+            member.member_info.password = this.memberDetails.member_info.password;
         }
+        this.memberDetails = Object.assign({}, member);
+        this.members.updateMemberDetails(this.memberDetails.member_info).subscribe(
+            data => {
+                if (data['status']) {
+                    // alert(data['result']);
+                    this.updateMember.hide();
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
+                }
+            }
+        )
     }
 
     addPost(note, current_noteId=null) {
@@ -147,8 +195,16 @@ export class LeadProfileComponent implements OnInit {
         this.members.addPost(postData).subscribe(
             data => {
                 if (data['status']) {
-                    alert(data['result']);
+                    // alert(data['result']);
                     this.postData.note = null;
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.getMemberDetails(this.member_id);
                 }
             }
@@ -161,8 +217,16 @@ export class LeadProfileComponent implements OnInit {
         this.members.editNote(postData).subscribe(
             data => {
                 if (data['status']) {
-                    alert(data['result']);
+                    // alert(data['result']);
                     this.updateNote.hide();
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                 }
             }
         )
@@ -172,8 +236,16 @@ export class LeadProfileComponent implements OnInit {
         this.members.editNote(postData).subscribe(
             data => {
                 if (data['status']) {
-                    alert(data['result']);
+                    // alert(data['result']);
                     this.updateChildNote.hide();
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.getMemberDetails(this.member_id);
                 }
             }
@@ -186,6 +258,14 @@ export class LeadProfileComponent implements OnInit {
             data => {
                 if (data['status']) {
                     this.deleteNote.hide();
+                    this.notificationService.smallBox({
+                        title: "Remove",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.memberDetails.notes.splice(removeIndex, 1);
                 }
             }
@@ -197,17 +277,32 @@ export class LeadProfileComponent implements OnInit {
             data => {
                 if (data['status']) {
                     this.deleteNote.hide();
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: data['result'],
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.getMemberDetails(this.member_id);
                 }
             }
         )
     }
 
-    addLikeComment(note) {
-        console.log(note);
-        this.members.addLikeComment(note.note_id, this.admin_id, "fa fa-thumbs-up").subscribe(
+    addLikeComment(note, comment) {
+        this.members.addLikeComment(note.note_id, this.admin_id, comment).subscribe(
             data => {
                 if (data['status']) {
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: "You added comment successfully",
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.getMemberDetails(this.member_id);
                 }
             }
@@ -219,6 +314,14 @@ export class LeadProfileComponent implements OnInit {
         this.members.removeLikeComment(note.note_id, this.admin_id).subscribe(
             data => {
                 if (data['status']) {
+                    this.notificationService.smallBox({
+                        title: "Success",
+                        content: "You removed comment successfully",
+                        color: "#739E73",
+                        timeout: 8000,
+                        icon: "fa fa-check",
+                        number: "4"
+                    });
                     this.getMemberDetails(this.member_id);
                 }
             }
